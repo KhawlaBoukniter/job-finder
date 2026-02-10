@@ -1,27 +1,51 @@
 # JobFinder
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.17.
+JobFinder is a modern job board application built with Angular 17+ and Tailwind CSS. It allows users to browse jobs, save favorites, and apply for positions.
 
-## Development server
+## Tech Stack
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- **Framework:** Angular 17+ (Standalone Components)
+- **Styling:** Tailwind CSS
+- **State Management:** LocalStorage (Session)
+- **Backend (Mock):** JSON Server
+- **External API:** Arbeitnow Job Board API
 
-## Code scaffolding
+## Getting Started
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Prerequisites
 
-## Build
+- Node.js (v18+)
+- npm
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Installation
 
-## Running unit tests
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd job-finder
+   ```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-## Running end-to-end tests
+### Running the Application
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+1. Start the development server:
+   ```bash
+   npm start
+   ```
+   Navigate to `http://localhost:4200/`.
 
-## Further help
+2. Start the Mock API (JSON Server):
+   ```bash
+   npm run api
+   ```
+   The API will run at `http://localhost:3000/`.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Architecture
+
+- `core/`: Global singleton services, guards, interceptors.
+- `features/`: Business logic modules (Auth, Jobs, Favorites, Applications).
+- `shared/`: Reusable UI components and pipes.
