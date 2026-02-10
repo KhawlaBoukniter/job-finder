@@ -13,9 +13,6 @@ export interface UserDb extends User {
     password: string;
 }
 
-/**
- * Removes password from user object before storing in state/localStorage
- */
 export function sanitizeUser(userDb: UserDb): User {
     const { password, ...user } = userDb;
     return user;
