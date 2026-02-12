@@ -85,7 +85,7 @@
             <ul class="space-y-4">
                 @for (job of displayedJobs(); track job.slug) {
                 <li>
-                    <app-job-card [job]="job"></app-job-card>
+                    <app-job-card [job]="job" [isLoggedIn]="isLoggedInSignal()"></app-job-card>
                 </li>
                 }
             </ul>

@@ -11,4 +11,5 @@ import { Job } from '../../models/job.model';
 })
 export class JobCardComponent {
     @Input({ required: true }) job!: Job;
+    @Input() isLoggedIn: boolean = false;
 }

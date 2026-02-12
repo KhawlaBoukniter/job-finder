@@ -5,6 +5,8 @@ import { JobsService } from '../../services/jobs.service';
 import { Job } from '../../models/job.model';
 import { JobCardComponent } from '../../components/job-card/job-card.component';
 
+import { AuthService } from '../../../../core/services/auth.service';
+
 @Component({
   selector: 'app-jobs-page',
   standalone: true,
@@ -15,6 +17,7 @@ import { JobCardComponent } from '../../components/job-card/job-card.component';
 export class JobsPageComponent {
   private fb = inject(FormBuilder);
   private jobsService = inject(JobsService);
+  private authService = inject(AuthService);
 
   searchForm = this.fb.group({
     keyword: ['', Validators.required],
@@ -25,6 +28,9 @@ export class JobsPageComponent {
   errorMessage = signal<string | null>(null);
   allJobs = signal<Job[]>([]);
   filteredJobs = signal<Job[]>([]);
+
+  currentUser = this.authService.currentUser;
+  isLoggedInSignal = computed(() => !!this.currentUser());
 
   currentPage = signal<number>(1);
   pageSize = 10;
