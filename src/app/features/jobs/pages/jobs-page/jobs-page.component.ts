@@ -58,6 +58,8 @@ export class JobsPageComponent {
       return matchesTitle && matchesLocation;
     });
 
+    filtered.sort((a, b) => b.created_at - a.created_at);
+
     this.filteredJobs.set(filtered);
   }
 }
