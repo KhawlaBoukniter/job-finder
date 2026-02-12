@@ -36,7 +36,7 @@ export class JobsPageComponent {
     this.jobsService.getJobs().subscribe({
       next: (response) => {
         this.allJobs.set(response.data);
-        this.filteredJobs.set(response.data);
+        this.applyFilters();
         this.isLoading.set(false);
       },
       error: (err) => {
@@ -45,5 +45,19 @@ export class JobsPageComponent {
         console.error('Error fetching jobs:', err);
       }
     });
+  }
+
+  private applyFilters(): void {
+    const { keyword, location } = this.searchForm.value;
+    const lowerKeyword = (keyword || '').toLowerCase();
+    const lowerLocation = (location || '').toLowerCase();
+
+    const filtered = this.allJobs().filter(job => {
+      const matchesTitle = job.title.toLowerCase().includes(lowerKeyword);
+      const matchesLocation = job.location.toLowerCase().includes(lowerLocation);
+      return matchesTitle && matchesLocation;
+    });
+
+    this.filteredJobs.set(filtered);
   }
 }
