@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JobsService } from '../../services/jobs.service';
@@ -25,6 +25,17 @@ export class JobsPageComponent {
   allJobs = signal<Job[]>([]);
   filteredJobs = signal<Job[]>([]);
 
+  currentPage = signal<number>(1);
+  pageSize = 10;
+
+  displayedJobs = computed(() => {
+    const start = (this.currentPage() - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    return this.filteredJobs().slice(start, end);
+  });
+
+  totalPages = computed(() => Math.ceil(this.filteredJobs().length / this.pageSize));
+
   onSearch(): void {
     if (this.searchForm.invalid) return;
 
@@ -32,6 +43,7 @@ export class JobsPageComponent {
     this.errorMessage.set(null);
     this.allJobs.set([]);
     this.filteredJobs.set([]);
+    this.currentPage.set(1);
 
     this.jobsService.getJobs().subscribe({
       next: (response) => {
@@ -47,6 +59,13 @@ export class JobsPageComponent {
     });
   }
 
+  changePage(page: number): void {
+    if (page >= 1 && page <= this.totalPages()) {
+      this.currentPage.set(page);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
   private applyFilters(): void {
     const { keyword, location } = this.searchForm.value;
     const lowerKeyword = (keyword || '').toLowerCase();
@@ -58,8 +77,10 @@ export class JobsPageComponent {
       return matchesTitle && matchesLocation;
     });
 
+    // Sort by date desc (recent first)
     filtered.sort((a, b) => b.created_at - a.created_at);
 
     this.filteredJobs.set(filtered);
+    this.currentPage.set(1); // Reset pagination after filter
   }
 }
