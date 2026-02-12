@@ -2,11 +2,28 @@
 
 JobFinder is a modern job board application built with Angular 17+ and Tailwind CSS. It allows users to browse jobs, saves favorites, and apply for positions.
 
+### Day 2: Authentication (Completed)
+- **Login/Register**: Forms with validation.
+- **Profile**: View and edit user details.
+- **Auth Guard**: Protects routes.
+- **State Management**: Using specific services and signals.
+
+### Day 3: Job Search (Completed)
+- **API Integration**: Fetches real job data from [Arbeitnow API](https://www.arbeitnow.com/api/job-board-api).
+- **Search**: Keyword and Location filtering.
+- **Pagination**: Client-side pagination (10 items/page).
+- **Sorting**: Most recent jobs first.
+- **Auth Integration**: "Apply" and "Favorites" buttons visible only to logged-in users.
+- **UI**: Responsive cards, loading spinners, and error handling.
+
 ## Tech Stack
 
 - **Framework:** Angular 17+ (Standalone Components)
 - **Styling:** Tailwind CSS
 - **State Management:** LocalStorage (Session) - *Authenticated User*
+- **State**: Signals & Services
+- **Backend (Auth)**: JSON Server (Mock)
+- **Backend (Jobs)**: Arbeitnow Public API - *Authenticated User*
 - **Backend (Mock):** JSON Server
 - **External API:** Arbeitnow Job Board API
 
