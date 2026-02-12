@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JobsService } from '../../services/jobs.service';
 import { Job } from '../../models/job.model';
+import { JobCardComponent } from '../../components/job-card/job-card.component';
 
 @Component({
   selector: 'app-jobs-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, JobCardComponent],
   templateUrl: './jobs-page.component.html',
   styleUrl: './jobs-page.component.css'
 })
@@ -77,10 +78,9 @@ export class JobsPageComponent {
       return matchesTitle && matchesLocation;
     });
 
-    // Sort by date desc (recent first)
     filtered.sort((a, b) => b.created_at - a.created_at);
 
     this.filteredJobs.set(filtered);
-    this.currentPage.set(1); // Reset pagination after filter
+    this.currentPage.set(1);
   }
 }
