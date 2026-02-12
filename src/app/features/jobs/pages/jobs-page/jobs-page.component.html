@@ -32,14 +32,91 @@
 
                         <!-- Search Button -->
                         <div class="flex items-end">
-                            <button type="submit" [disabled]="searchForm.invalid"
+                            <button type="submit" [disabled]="searchForm.invalid || isLoading()"
                                 class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed">
-                                Rechercher
+                                {{ isLoading() ? 'Chargement...' : 'Rechercher' }}
                             </button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+
+        <!-- Error Message -->
+        @if (errorMessage()) {
+        <div class="mb-8 bg-red-50 border-l-4 border-red-500 p-4">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-red-700">{{ errorMessage() }}</p>
+                </div>
+            </div>
+        </div>
+        }
+
+        <!-- Loading State -->
+        @if (isLoading()) {
+        <div class="mt-12 text-center">
+            <svg class="mx-auto h-12 w-12 text-gray-400 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                </path>
+            </svg>
+            <p class="mt-2 text-lg font-medium text-gray-900">Recherche des offres en cours...</p>
+        </div>
+        }
+
+        <!-- Results -->
+        @if (!isLoading() && !errorMessage() && allJobs().length > 0) {
+        <div class="mt-8">
+            <h2 class="text-xl font-bold text-gray-900 mb-4">Résultats ({{ filteredJobs().length }})</h2>
+            <ul class="space-y-4">
+                @for (job of filteredJobs(); track job.slug) {
+                <li
+                    class="bg-white shadow overflow-hidden sm:rounded-md p-6 hover:shadow-lg transition-shadow duration-200">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-lg font-medium text-indigo-600 truncate mb-1">{{ job.title }}</h3>
+                            <div class="flex items-center text-sm text-gray-500 mb-2">
+                                <span class="font-semibold text-gray-900 mr-2">{{ job.company_name }}</span>
+                                <span>&bull;</span>
+                                <span class="ml-2">{{ job.location }}</span>
+                            </div>
+                            <div class="mt-2 flex items-center text-xs text-gray-400">
+                                <span *ngFor="let tag of job.tags"
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 mr-2">
+                                    {{ tag }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <div class="text-sm text-gray-500 mb-2">
+                                Publié le : {{ job.created_at * 1000 | date:'dd/MM/yyyy' }}
+                            </div>
+                            @if (job.remote) {
+                            <span
+                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                Remote
+                            </span>
+                            }
+                        </div>
+                    </div>
+                </li>
+                }
+            </ul>
+        </div>
+        } @else if (!isLoading() && !errorMessage() && searchForm.valid && searchForm.touched && allJobs().length === 0)
+        {
+        <!-- No results (only show if we actually searched) - Logic to be refined as update on search -->
+        }
     </div>
 </div>
