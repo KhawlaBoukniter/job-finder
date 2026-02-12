@@ -7,14 +7,14 @@ import { catchError, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 import * as FavoritesActions from './favorites.actions';
 import { Favorite } from './favorites.state';
 import { selectAllFavorites } from './favorites.selectors';
-import { environment } from '../../../../environments/environment';
+// import { environment } from '../../../../environments/environment';
 
 @Injectable()
 export class FavoritesEffects {
     private actions$ = inject(Actions);
     private http = inject(HttpClient);
     private store = inject(Store);
-    private apiUrl = 'http://localhost:3000/favoritesOffers'; 
+    private apiUrl = 'http://localhost:3000/favoritesOffers';
 
     loadFavorites$ = createEffect(() =>
         this.actions$.pipe(
