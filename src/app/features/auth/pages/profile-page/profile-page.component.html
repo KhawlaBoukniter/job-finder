@@ -41,7 +41,22 @@
                         <div class="col-span-6 sm:col-span-4">
                             <label for="email" class="block text-sm font-medium text-gray-700">Adresse email</label>
                             <input type="email" formControlName="email" id="email"
-                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                class="mt-1 focus:ring-purple-500 focus:border-purple-500 block w-full shadow-sm sm:text-sm border-zinc-300 rounded-md">
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-4">
+                            <label for="password" class="block text-sm font-medium text-gray-700">
+                                Nouveau mot de passe
+                                <span class="text-xs text-gray-500 font-normal">(Laisser vide pour ne pas
+                                    changer)</span>
+                            </label>
+                            <input type="password" formControlName="password" id="password"
+                                class="mt-1 focus:ring-purple-500 focus:border-purple-500 block w-full shadow-sm sm:text-sm border-zinc-300 rounded-md">
+                            @if (profileForm.get('password')?.touched &&
+                            profileForm.get('password')?.hasError('minlength')) {
+                            <p class="text-xs text-red-500 mt-1">Le mot de passe doit contenir au moins 6 caractères.
+                            </p>
+                            }
                         </div>
                     </div>
 

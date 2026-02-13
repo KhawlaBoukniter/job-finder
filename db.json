@@ -4,8 +4,16 @@
       "id": "1",
       "email": "user@test.com",
       "password": "password123",
-      "name": "Test User",
+      "firstName": "Test",
+      "lastName": "User",
       "role": "EMPLOYEE"
+    },
+    {
+      "id": "9e6f",
+      "firstName": "Test ",
+      "lastName": "User",
+      "email": "testUser@gmail.com",
+      "password": "password123"
     }
   ],
   "favoritesOffers": [

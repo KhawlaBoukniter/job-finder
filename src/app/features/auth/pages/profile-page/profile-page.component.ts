@@ -25,7 +25,8 @@ export class ProfilePageComponent implements OnInit {
   profileForm = this.fb.group({
     firstName: ['', [Validators.required]],
     lastName: ['', [Validators.required]],
-    email: ['', [Validators.required, Validators.email]]
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.minLength(6)]]
   });
 
   ngOnInit(): void {
@@ -35,7 +36,8 @@ export class ProfilePageComponent implements OnInit {
       this.profileForm.patchValue({
         firstName: user.firstName,
         lastName: user.lastName,
-        email: user.email
+        email: user.email,
+        password: ''
       });
     } else {
       this.router.navigate(['/login']);
@@ -52,13 +54,24 @@ export class ProfilePageComponent implements OnInit {
     const userId = this.currentUser()?.id;
     if (!userId) return;
 
-    const updates = this.profileForm.value;
+    const { firstName, lastName, email, password } = this.profileForm.value;
+
+    const updates: Record<string, any> = {
+      firstName,
+      lastName,
+      email
+    };
+
+    if (password && password.trim() !== '') {
+      updates['password'] = password;
+    }
 
     this.authService.updateProfile(userId, updates as Partial<User>).subscribe({
       next: (updatedUser) => {
         this.currentUser.set(updatedUser);
         this.successMessage.set('Profil mis à jour avec succès');
         this.isLoading.set(false);
+        this.profileForm.patchValue({ password: '' });
       },
       error: (err) => {
         this.errorMessage.set(err.message || 'Erreur lors de la mise à jour');
