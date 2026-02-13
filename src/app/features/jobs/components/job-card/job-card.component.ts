@@ -33,4 +33,8 @@ export class JobCardComponent implements OnInit {
             this.store.dispatch(addFavorite({ job: this.job, userId: user.id }));
         }
     }
+
+    onTrackApplication(): void {
+        console.log('Track application for:', this.job.slug);
+    }
 }

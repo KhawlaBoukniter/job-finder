@@ -1,54 +1,96 @@
-<div class="bg-white shadow overflow-hidden sm:rounded-md p-6 hover:shadow-lg transition-shadow duration-200">
-    <div class="flex justify-between items-start">
-        <div>
-            <h3 class="text-lg font-medium text-purple-600 truncate mb-1">{{ job.title }}</h3>
-            <div class="flex items-center text-sm text-zinc-500 mb-2">
-                <span class="font-semibold text-zinc-900 mr-2">{{ job.company_name }}</span>
-                <span>&bull;</span>
-                <span class="ml-2">{{ job.location }}</span>
+<div class="bg-white shadow overflow-hidden sm:rounded-md p-4 hover:shadow-lg transition-shadow duration-200 group">
+    <div class="flex justify-between items-start gap-4">
+        <!-- Main Content (Left) -->
+        <div class="flex-grow min-w-0">
+            <div class="flex items-center justify-between sm:justify-start gap-x-2">
+                <h3 class="text-lg font-bold text-zinc-900 truncate group-hover:text-purple-600 transition-colors">{{
+                    job.title }}</h3>
+                @if (job.remote) {
+                <span
+                    class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-100 shrink-0 sm:hidden">
+                    Remote
+                </span>
+                }
             </div>
-            <div class="mt-2 flex items-center text-xs text-zinc-400">
+
+            <div class="flex flex-wrap items-center text-xs text-zinc-500 mt-1 gap-y-1">
+                <span class="font-semibold text-zinc-700 mr-2">{{ job.company_name }}</span>
+                <span class="mr-2">&bull;</span>
+                <span class="mr-2">{{ job.location }}</span>
+                <span class="mr-2">&bull;</span>
+                <span>{{ job.created_at * 1000 | date:'dd/MM/yyyy' }}</span>
+                @if (job.salary) {
+                <span class="hidden sm:inline-block mx-2 border-l border-zinc-300 h-3"></span>
+                <span class="font-medium text-emerald-600">💰 {{ job.salary }}</span>
+                }
+            </div>
+
+            <div class="mt-2 text-sm text-zinc-600 line-clamp-2">
+                <div [innerHTML]="job.description"></div>
+            </div>
+
+            <div class="mt-3 flex flex-wrap gap-2">
+                @if (job.salary) {
+                <!-- Mobile salary implementation -->
+                <span
+                    class="sm:hidden inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">
+                    $ {{ job.salary }} 
+                </span>
+                }
                 <span *ngFor="let tag of job.tags"
-                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-zinc-100 text-zinc-800 mr-2">
+                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-zinc-50 text-zinc-600 border border-zinc-200">
                     {{ tag }}
                 </span>
             </div>
         </div>
-        <div class="flex flex-col items-end">
-            <div class="text-sm text-zinc-500 mb-2">
-                Publié le : {{ job.created_at * 1000 | date:'dd/MM/yyyy' }}
-            </div>
+
+        <!-- Meta & Actions (Right) -->
+        <div class="flex flex-col items-end gap-3 shrink-0">
             @if (job.remote) {
             <span
-                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 mb-2">
+                class="hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">
                 Remote
             </span>
             }
-            @if (isLoggedIn) {
-            <div class="flex space-x-2 mt-2">
+
+            <div class="flex flex-col sm:flex-row items-end sm:items-center gap-2 mt-1">
+                @if (isLoggedIn) {
+                <button (click)="onTrackApplication()"
+                    class="p-1.5 text-zinc-400 hover:text-purple-600 hover:bg-purple-50 rounded-md transition-colors"
+                    title="Suivre cette candidature">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                </button>
+
                 @if (isFavorite$ | async) {
-                <span
-                    class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-emerald-700 bg-emerald-100 cursor-default">
-                    <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                <button (click)="onAddToFavorites()"
+                    class="p-1.5 text-emerald-600 bg-emerald-50 rounded-md transition-colors"
+                    title="Retirer des favoris">
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd"
                             d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
                             clip-rule="evenodd" />
                     </svg>
-                    Favori
-                </span>
+                </button>
                 } @else {
                 <button (click)="onAddToFavorites()"
-                    class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-purple-700 bg-purple-100 hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                    Ajouter aux favoris
+                    class="p-1.5 text-zinc-400 hover:text-purple-600 hover:bg-purple-50 rounded-md transition-colors"
+                    title="Ajouter aux favoris">
+                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
                 </button>
+                }
                 }
 
                 <a [href]="job.url" target="_blank"
-                    class="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                    Postuler
+                    class="inline-flex justify-center items-center px-4 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 shadow-sm transition-colors duration-150 whitespace-nowrap">
+                    Voir l'offre
                 </a>
             </div>
-            }
         </div>
     </div>
 </div>

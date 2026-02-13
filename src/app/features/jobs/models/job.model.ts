@@ -9,6 +9,7 @@ export interface Job {
     job_types: string[];
     location: string;
     created_at: number;
+    salary?: string;
 }
 
 export interface JobApiResponse {
