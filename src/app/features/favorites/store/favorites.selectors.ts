@@ -37,7 +37,7 @@ export const selectFavoritesAsJobs = createSelector(
         title: fav.title,
         description: '',
         remote: false,
-        url: '',
+        url: fav.url,
         tags: [],
         job_types: [],
         location: fav.location,
