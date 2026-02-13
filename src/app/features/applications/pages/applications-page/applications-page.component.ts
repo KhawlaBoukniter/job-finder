@@ -2,14 +2,15 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApplicationsService } from '../../services/applications.service';
 import { AuthService } from '../../../../core/services/auth.service';
-import { ApplicationItem } from '../../models/application.model';
+import { ApplicationItem, ApplicationStatus } from '../../models/application.model';
 import { RouterLink } from '@angular/router';
 import { ApplicationCardComponent } from '../../components/application-card/application-card.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'app-applications-page',
     standalone: true,
-    imports: [CommonModule, RouterLink, ApplicationCardComponent],
+    imports: [CommonModule, RouterLink, ApplicationCardComponent, FormsModule],
     template: `
     <div class="container mx-auto px-4 py-8">
       <h1 class="text-3xl font-bold text-zinc-900 mb-8">Mes Candidatures</h1>
@@ -36,7 +37,9 @@ import { ApplicationCardComponent } from '../../components/application-card/appl
           @for (app of applications; track app.id) {
              <app-application-card 
                 [application]="app" 
-                (delete)="onDelete($event)">
+                (delete)="onDelete($event)"
+                (updateStatus)="onUpdateStatus($event)"
+                (updateNotes)="onUpdateNotes($event)">
              </app-application-card>
           }
         </div>
@@ -76,5 +79,30 @@ export class ApplicationsPageComponent implements OnInit {
             },
             error: (err) => console.error('Error deleting application:', err)
         });
+    }
+
+    onUpdateStatus(event: { id: number | string, status: ApplicationStatus }) {
+        const app = this.applications.find(a => a.id === event.id);
+        if (app) {
+            const oldStatus = app.status;
+            app.status = event.status;
+
+            this.applicationsService.updateApplication(event.id, { status: event.status }).subscribe({
+                error: (err) => {
+                    console.error('Error updating status:', err);
+                    app.status = oldStatus;
+                }
+            });
+        }
+    }
+
+    onUpdateNotes(event: { id: number | string, notes: string }) {
+        const app = this.applications.find(a => a.id === event.id);
+        if (app) {
+            app.notes = event.notes;
+            this.applicationsService.updateApplication(event.id, { notes: event.notes }).subscribe({
+                error: (err) => console.error('Error updating notes:', err)
+            });
+        }
     }
 }
