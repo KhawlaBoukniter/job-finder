@@ -13,10 +13,6 @@
                             <input type="text" id="keyword" formControlName="keyword"
                                 placeholder="Ex: Développeur Angular"
                                 class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            @if (searchForm.get('keyword')?.touched && searchForm.get('keyword')?.hasError('required'))
-                            {
-                            <p class="mt-1 text-xs text-red-500">Ce champ est requis</p>
-                            }
                         </div>
 
                         <!-- Location Input -->
@@ -24,10 +20,6 @@
                             <label for="location" class="block text-sm font-medium text-gray-700">Localisation</label>
                             <input type="text" id="location" formControlName="location" placeholder="Ex: Paris, Remote"
                                 class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                            @if (searchForm.get('location')?.touched &&
-                            searchForm.get('location')?.hasError('required')) {
-                            <p class="mt-1 text-xs text-red-500">Ce champ est requis</p>
-                            }
                         </div>
 
                         <!-- Search Button -->
@@ -85,7 +77,8 @@
             <ul class="space-y-4">
                 @for (job of displayedJobs(); track job.slug) {
                 <li>
-                    <app-job-card [job]="job" [isLoggedIn]="isLoggedInSignal()"></app-job-card>
+                    <app-job-card [job]="job" [isLoggedIn]="isLoggedInSignal()" (apply)="onApply($event)">
+                    </app-job-card>
                 </li>
                 }
             </ul>
@@ -116,7 +109,6 @@
                             <button (click)="changePage(currentPage() - 1)" [disabled]="currentPage() === 1"
                                 class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50">
                                 <span class="sr-only">Précédent</span>
-                                <!-- Heroicon name: solid/chevron-left -->
                                 <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                     fill="currentColor" aria-hidden="true">
                                     <path fill-rule="evenodd"
@@ -127,7 +119,6 @@
                             <button (click)="changePage(currentPage() + 1)" [disabled]="currentPage() === totalPages()"
                                 class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50">
                                 <span class="sr-only">Suivant</span>
-                                <!-- Heroicon name: solid/chevron-right -->
                                 <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                                     fill="currentColor" aria-hidden="true">
                                     <path fill-rule="evenodd"
