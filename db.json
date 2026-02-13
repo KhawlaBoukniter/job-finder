@@ -10,12 +10,6 @@
   ],
   "favoritesOffers": [
     {
-      "id": "1",
-      "userId": "1",
-      "jobId": "job_1",
-      "title": "Angular Developer"
-    },
-    {
       "id": "20c8",
       "slug": "remote-marketing-student-munich-12978",
       "company_name": "SolarEdge",
