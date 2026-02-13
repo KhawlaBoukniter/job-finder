@@ -19,6 +19,7 @@ import { FavoriteOffer } from '../../../favorites/store/favorites.state';
 export class JobCardComponent implements OnInit {
     @Input({ required: true }) job!: Job;
     @Input() isLoggedIn: boolean = false;
+    @Input() isApplied: boolean = false;
 
     @Output() apply = new EventEmitter<Job>();
 

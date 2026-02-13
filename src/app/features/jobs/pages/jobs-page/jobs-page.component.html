@@ -77,7 +77,8 @@
             <ul class="space-y-4">
                 @for (job of displayedJobs(); track job.slug) {
                 <li>
-                    <app-job-card [job]="job" [isLoggedIn]="isLoggedInSignal()" (apply)="onApply($event)">
+                    <app-job-card [job]="job" [isLoggedIn]="isLoggedInSignal()"
+                        [isApplied]="appliedJobIds().has(job.slug)" (apply)="onApply($event)">
                     </app-job-card>
                 </li>
                 }

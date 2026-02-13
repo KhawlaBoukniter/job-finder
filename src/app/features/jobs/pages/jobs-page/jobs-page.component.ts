@@ -34,6 +34,8 @@ export class JobsPageComponent implements OnInit {
   currentPage = signal<number>(1);
   pageSize = 10;
 
+  appliedJobIds = signal<Set<string>>(new Set());
+
   currentUser = this.authService.currentUser;
   isLoggedInSignal = computed(() => !!this.currentUser());
 
@@ -47,6 +49,20 @@ export class JobsPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.onSearch();
+    this.loadAppliedJobs();
+  }
+
+  loadAppliedJobs() {
+    const user = this.currentUser();
+    if (user && user.id) {
+      this.applicationsService.getUserApplications(user.id).subscribe({
+        next: (apps) => {
+          const ids = new Set(apps.map(a => a.offerId));
+          this.appliedJobIds.set(ids);
+        },
+        error: (err) => console.error('Error loading applied jobs:', err)
+      });
+    }
   }
 
   onSearch(): void {
@@ -97,10 +113,20 @@ export class JobsPageComponent implements OnInit {
     const user = this.currentUser();
     if (!user || !user.id) return;
 
+    // Check local state first for immediate feedback prevention
+    if (this.appliedJobIds().has(job.slug)) {
+      return;
+    }
+
     this.applicationsService.checkExists(user.id, job.slug).subscribe({
       next: (existing) => {
         if (existing.length > 0) {
-          alert('Vous suivez déjà cette candidature !');
+          // Sync local state if missed
+          this.appliedJobIds.update(set => {
+            const newSet = new Set(set);
+            newSet.add(job.slug);
+            return newSet;
+          });
         } else {
           this.createApplication(job, user.id);
         }
@@ -123,7 +149,13 @@ export class JobsPageComponent implements OnInit {
     };
 
     this.applicationsService.addApplication(newApp).subscribe({
-      next: () => alert('Candidature ajoutée au suivi !'),
+      next: () => {
+        this.appliedJobIds.update(set => {
+          const newSet = new Set(set);
+          newSet.add(job.slug);
+          return newSet;
+        });
+      },
       error: (err) => console.error('Error adding application:', err)
     });
   }
