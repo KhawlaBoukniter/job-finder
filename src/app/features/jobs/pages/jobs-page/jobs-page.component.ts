@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JobsService } from '../../services/jobs.service';
@@ -14,15 +14,19 @@ import { AuthService } from '../../../../core/services/auth.service';
   templateUrl: './jobs-page.component.html',
   styleUrl: './jobs-page.component.css'
 })
-export class JobsPageComponent {
+export class JobsPageComponent implements OnInit {
   private fb = inject(FormBuilder);
   private jobsService = inject(JobsService);
   private authService = inject(AuthService);
 
   searchForm = this.fb.group({
-    keyword: ['', Validators.required],
-    location: ['', Validators.required]
+    keyword: [''],
+    location: ['']
   });
+
+  ngOnInit(): void {
+    this.onSearch();
+  }
 
   isLoading = signal<boolean>(false);
   errorMessage = signal<string | null>(null);
