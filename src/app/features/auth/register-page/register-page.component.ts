@@ -2,16 +2,16 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../../../core/services/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
-  selector: 'app-login-page',
+  selector: 'app-register-page',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
-  templateUrl: './login-page.component.html',
-  styleUrl: './login-page.component.css'
+  templateUrl: './register-page.component.html',
+  styleUrl: './register-page.component.css'
 })
-export class LoginPageComponent {
+export class RegisterPageComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
@@ -19,20 +19,27 @@ export class LoginPageComponent {
   errorMessage = signal<string>('');
   isLoading = signal<boolean>(false);
 
-  loginForm = this.fb.group({
+  registerForm = this.fb.group({
+    firstName: ['', [Validators.required]],
+    lastName: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
 
   onSubmit(): void {
-    if (this.loginForm.invalid) return;
+    if (this.registerForm.invalid) return;
 
     this.isLoading.set(true);
     this.errorMessage.set('');
 
-    const { email, password } = this.loginForm.value;
+    const { firstName, lastName, email, password } = this.registerForm.value;
 
-    this.authService.login({ email: email!, password: password! }).subscribe({
+    this.authService.register({
+      firstName: firstName!,
+      lastName: lastName!,
+      email: email!,
+      password: password!
+    }).subscribe({
       next: () => {
         this.router.navigate(['/jobs']);
       },
