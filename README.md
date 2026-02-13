@@ -16,6 +16,14 @@ JobFinder is a modern job board application built with Angular 17+ and Tailwind 
 - **Auth Integration**: "Apply" and "Favorites" buttons visible only to logged-in users.
 - **UI**: Responsive cards, loading spinners, and error handling.
 
+### Day 4: Favorites (New)
+- **State Management**: Implemented with **NgRx** (Store, Effects, Actions, Reducers).
+- **Features**: 
+  - Add jobs to favorites (preventing duplicates).
+  - View list of favorite jobs.
+  - Remove jobs from favorites.
+  - Persisted to `mock-api` via Effects.
+
 ## Tech Stack
 
 - **Framework:** Angular 17+ (Standalone Components)
