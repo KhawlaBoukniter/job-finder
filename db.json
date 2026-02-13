@@ -30,18 +30,6 @@
   ],
   "applications": [
     {
-      "id": "2aa1",
-      "userId": "9e6f",
-      "offerId": "remote-marketing-student-munich-12978",
-      "apiSource": "arbeitnow",
-      "title": "Marketing Student",
-      "company": "SolarEdge",
-      "location": "Munich",
-      "url": "https://www.arbeitnow.com/jobs/companies/solaredge/remote-marketing-student-munich-12978",
-      "status": "en_attente",
-      "dateAdded": "2026-02-13T14:54:29.306Z"
-    },
-    {
       "id": "0178",
       "userId": "9e6f",
       "offerId": "remote-senior-marketing-manager-dach-germany-466417",

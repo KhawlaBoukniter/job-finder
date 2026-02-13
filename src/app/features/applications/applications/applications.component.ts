@@ -4,7 +4,6 @@ import { ApplicationsService } from '../services/applications.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { ApplicationItem } from '../models/application.model';
 import { RouterLink } from '@angular/router';
-import { ApplicationCardComponent } from '../components/application-card/application-card.component';
 
 @Component({
     selector: 'app-applications-page',
@@ -36,4 +35,15 @@ export class ApplicationsPageComponent implements OnInit {
             this.isLoading = false;
         }
     }
+
+  onDelete(id: number | string) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce suivi ?')) {
+      this.applicationsService.deleteApplication(id).subscribe({
+        next: () => {
+          this.applications = this.applications.filter(a => a.id !== id);
+        },
+        error: (err) => console.error('Error deleting application:', err)
+      });
+    }
+  }
 }
