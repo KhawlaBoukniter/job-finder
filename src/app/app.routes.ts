@@ -18,7 +18,13 @@ export const routes: Routes = [
   {
     path: 'applications',
     loadComponent: () => import('./features/applications/applications/applications.component')
-      .then(m => m.ApplicationsComponent),
+      .then(m => m.ApplicationsPageComponent),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'applications',
+    loadComponent: () => import('./features/applications/applications/applications.component')
+      .then(m => m.ApplicationsPageComponent),
     canActivate: [authGuard]
   },
   {
