@@ -20,8 +20,7 @@ export class RegisterPageComponent {
   isLoading = signal<boolean>(false);
 
   registerForm = this.fb.group({
-    firstName: ['', [Validators.required]],
-    lastName: ['', [Validators.required]],
+    name: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]]
   });
@@ -32,11 +31,10 @@ export class RegisterPageComponent {
     this.isLoading.set(true);
     this.errorMessage.set('');
 
-    const { firstName, lastName, email, password } = this.registerForm.value;
+    const { name, email, password } = this.registerForm.value;
 
     this.authService.register({
-      firstName: firstName!,
-      lastName: lastName!,
+      name: name!,
       email: email!,
       password: password!
     }).subscribe({

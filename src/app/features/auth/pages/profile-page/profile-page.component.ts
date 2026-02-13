@@ -23,8 +23,7 @@ export class ProfilePageComponent implements OnInit {
   isLoading = signal<boolean>(false);
 
   profileForm = this.fb.group({
-    firstName: ['', [Validators.required]],
-    lastName: ['', [Validators.required]],
+    name: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]]
   });
 
@@ -33,8 +32,7 @@ export class ProfilePageComponent implements OnInit {
     if (user) {
       this.currentUser.set(user);
       this.profileForm.patchValue({
-        firstName: user.firstName,
-        lastName: user.lastName,
+        name: user.name,
         email: user.email
       });
     } else {

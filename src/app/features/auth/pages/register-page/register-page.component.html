@@ -20,24 +20,14 @@
 
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="mt-8 space-y-6">
             <div class="rounded-md shadow-sm space-y-4">
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 gap-4">
                     <div>
-                        <label for="firstName" class="sr-only">Prénom</label>
-                        <input id="firstName" type="text" formControlName="firstName"
+                        <label for="name" class="sr-only">Nom Complet</label>
+                        <input id="name" type="text" formControlName="name"
                             class="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                             placeholder="Prénom">
-                        @if (registerForm.get('firstName')?.touched &&
-                        registerForm.get('firstName')?.hasError('required')) {
-                        <p class="text-xs text-red-500 mt-1">Requis</p>
-                        }
-                    </div>
-                    <div>
-                        <label for="lastName" class="sr-only">Nom</label>
-                        <input id="lastName" type="text" formControlName="lastName"
-                            class="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                            placeholder="Nom">
-                        @if (registerForm.get('lastName')?.touched &&
-                        registerForm.get('lastName')?.hasError('required')) {
+                        @if (registerForm.get('name')?.touched &&
+                        registerForm.get('name')?.hasError('required')) {
                         <p class="text-xs text-red-500 mt-1">Requis</p>
                         }
                     </div>
