@@ -2,6 +2,7 @@ import { Job } from '../../jobs/models/job.model';
 
 export interface Favorite extends Job {
     userId: string;
+    id?: number | string;
 }
 
 export interface FavoritesState {

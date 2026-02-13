@@ -11,8 +11,8 @@ export const routes: Routes = [
   { path: 'jobs', component: JobsPageComponent },
   {
     path: 'favorites',
-    loadComponent: () => import('./features/favorites/favorites/favorites.component')
-      .then(m => m.FavoritesComponent),
+    loadComponent: () => import('./features/favorites/pages/favorites-page/favorites-page.component')
+      .then(m => m.FavoritesPageComponent),
     canActivate: [authGuard]
   },
   {
