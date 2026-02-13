@@ -34,12 +34,12 @@ export const addFavoriteFailure = createAction(
 
 export const removeFavorite = createAction(
     '[Favorites Page] Remove Favorite',
-    props<{ id: number }>() 
+    props<{ id: number | string }>()
 );
 
 export const removeFavoriteSuccess = createAction(
     '[Favorites API] Remove Favorite Success',
-    props<{ id: number }>()
+    props<{ id: number | string }>()
 );
 
 export const removeFavoriteFailure = createAction(
