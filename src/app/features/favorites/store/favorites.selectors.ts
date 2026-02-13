@@ -18,8 +18,12 @@ export const selectError = createSelector(
     (state) => state.error
 );
 
-// Selector to check if a specific job slug is in favorites
 export const isFavorite = (slug: string) => createSelector(
     selectAllFavorites,
     (favorites) => favorites.some(job => job.slug === slug)
+);
+
+export const selectFavoriteBySlug = (slug: string) => createSelector(
+    selectAllFavorites,
+    (favorites) => favorites.find(job => job.slug === slug)
 );

@@ -36,20 +36,10 @@
         @if (!(isLoading$ | async) && !(error$ | async)) {
         <ul class="space-y-4">
             @for (fav of favorites$ | async; track fav.slug) {
-            <li class="bg-white shadow overflow-hidden sm:rounded-md p-6">
+            <li class="bg-white shadow overflow-hidden sm:rounded-md">
                 <div class="flex justify-between items-start">
                     <div class="w-full">
                         <app-job-card [job]="fav" [isLoggedIn]="true"></app-job-card>
-
-                        <!-- Remove Actions -->
-                        <div class="mt-4 flex justify-end">
-                            @if (fav.id) {
-                            <button (click)="onRemove(fav.id)"
-                                class="text-sm text-red-600 hover:text-red-900 font-medium">
-                                Retirer des favoris
-                            </button>
-                            }
-                        </div>
                     </div>
                 </div>
             </li>

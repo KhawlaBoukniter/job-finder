@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Favorite } from '../../store/favorites.state';
-import { loadFavorites, removeFavorite } from '../../store/favorites.actions';
+import { loadFavorites } from '../../store/favorites.actions';
 import { selectAllFavorites, selectIsLoading, selectError } from '../../store/favorites.selectors';
 import { AuthService } from '../../../../core/services/auth.service';
 import { JobCardComponent } from '../../../jobs/components/job-card/job-card.component';
@@ -28,9 +28,5 @@ export class FavoritesPageComponent implements OnInit {
         if (user && user.id) {
             this.store.dispatch(loadFavorites({ userId: user.id }));
         }
-    }
-
-    onRemove(id: any): void {
-        this.store.dispatch(removeFavorite({ id }));
     }
 }

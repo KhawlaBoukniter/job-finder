@@ -2,9 +2,9 @@ import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Job } from '../../models/job.model';
 import { Store } from '@ngrx/store';
-import { addFavorite } from '../../../favorites/store/favorites.actions';
-import { isFavorite } from '../../../favorites/store/favorites.selectors';
-import { Observable } from 'rxjs';
+import { addFavorite, removeFavorite } from '../../../favorites/store/favorites.actions';
+import { isFavorite, selectFavoriteBySlug } from '../../../favorites/store/favorites.selectors';
+import { Observable, take } from 'rxjs';
 import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
@@ -23,15 +23,24 @@ export class JobCardComponent implements OnInit {
 
     isFavorite$!: Observable<boolean>;
 
+    private currentFavorite$: Observable<Job | undefined> | undefined;
+
     ngOnInit(): void {
         this.isFavorite$ = this.store.select(isFavorite(this.job.slug));
+        this.currentFavorite$ = this.store.select(selectFavoriteBySlug(this.job.slug));
     }
 
     onAddToFavorites(): void {
         const user = this.authService.currentUser();
-        if (user && user.id) {
-            this.store.dispatch(addFavorite({ job: this.job, userId: user.id }));
-        }
+        if (!user || !user.id) return;
+
+        this.currentFavorite$?.pipe(take(1)).subscribe(existingFav => {
+            if (existingFav && (existingFav as any).id) {
+                this.store.dispatch(removeFavorite({ id: (existingFav as any).id }));
+            } else {
+                this.store.dispatch(addFavorite({ job: this.job, userId: user.id }));
+            }
+        });
     }
 
     onTrackApplication(): void {
