@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Favorite } from './favorites.state';
+import { FavoriteOffer } from './favorites.state';
 import { Job } from '../../jobs/models/job.model';
 
 export const loadFavorites = createAction(
@@ -9,7 +9,7 @@ export const loadFavorites = createAction(
 
 export const loadFavoritesSuccess = createAction(
     '[Favorites API] Load Favorites Success',
-    props<{ favorites: Favorite[] }>()
+    props<{ favorites: FavoriteOffer[] }>()
 );
 
 export const loadFavoritesFailure = createAction(
@@ -24,7 +24,7 @@ export const addFavorite = createAction(
 
 export const addFavoriteSuccess = createAction(
     '[Favorites API] Add Favorite Success',
-    props<{ favorite: Favorite }>()
+    props<{ favorite: FavoriteOffer }>()
 );
 
 export const addFavoriteFailure = createAction(

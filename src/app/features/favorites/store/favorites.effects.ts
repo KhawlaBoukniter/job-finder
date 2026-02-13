@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 import * as FavoritesActions from './favorites.actions';
-import { Favorite } from './favorites.state';
+import { FavoriteOffer } from './favorites.state';
 import { selectAllFavorites } from './favorites.selectors';
 // import { environment } from '../../../../environments/environment';
 
@@ -20,7 +20,7 @@ export class FavoritesEffects {
         this.actions$.pipe(
             ofType(FavoritesActions.loadFavorites),
             mergeMap(({ userId }) =>
-                this.http.get<Favorite[]>(`${this.apiUrl}?userId=${userId}`).pipe(
+                this.http.get<FavoriteOffer[]>(`${this.apiUrl}?userId=${userId}`).pipe(
                     map((favorites) => FavoritesActions.loadFavoritesSuccess({ favorites })),
                     catchError((error) =>
                         of(FavoritesActions.loadFavoritesFailure({ error: error.message }))
@@ -35,15 +35,24 @@ export class FavoritesEffects {
             ofType(FavoritesActions.addFavorite),
             withLatestFrom(this.store.select(selectAllFavorites)),
             mergeMap(([{ job, userId }, favorites]) => {
-                const isAlreadyFavorite = favorites.some((f) => f.slug === job.slug);
+                const isAlreadyFavorite = favorites.some((f) => f.offerId === job.slug);
 
                 if (isAlreadyFavorite) {
-                    const existing = favorites.find((f) => f.slug === job.slug);
+                    const existing = favorites.find((f) => f.offerId === job.slug);
                     if (existing) return of(FavoritesActions.addFavoriteSuccess({ favorite: existing }));
                 }
 
-                const newFavorite: Favorite = { ...job, userId };
-                return this.http.post<Favorite>(this.apiUrl, newFavorite).pipe(
+                const newFavorite: FavoriteOffer = {
+                    userId,
+                    offerId: job.slug,
+                    title: job.title,
+                    company: job.company_name,
+                    location: job.location,
+                    url: job.url,
+                    created_at: job.created_at
+                };
+
+                return this.http.post<FavoriteOffer>(this.apiUrl, newFavorite).pipe(
                     map((favorite) => FavoritesActions.addFavoriteSuccess({ favorite })),
                     catchError((error) =>
                         of(FavoritesActions.addFavoriteFailure({ error: error.message }))

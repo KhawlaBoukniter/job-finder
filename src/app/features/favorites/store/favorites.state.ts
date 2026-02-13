@@ -1,12 +1,18 @@
 import { Job } from '../../jobs/models/job.model';
 
-export interface Favorite extends Job {
-    userId: string;
+export interface FavoriteOffer {
     id?: number | string;
+    userId: string;
+    offerId: string;
+    title: string;
+    company: string;
+    location: string;
+    url: string;
+    created_at: number;
 }
 
 export interface FavoritesState {
-    favorites: Favorite[];
+    favorites: FavoriteOffer[];
     isLoading: boolean;
     error: string | null;
 }

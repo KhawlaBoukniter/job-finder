@@ -7,6 +7,8 @@ import { isFavorite, selectFavoriteBySlug } from '../../../favorites/store/favor
 import { Observable, take } from 'rxjs';
 import { AuthService } from '../../../../core/services/auth.service';
 
+import { FavoriteOffer } from '../../../favorites/store/favorites.state';
+
 @Component({
     selector: 'app-job-card',
     standalone: true,
@@ -23,7 +25,7 @@ export class JobCardComponent implements OnInit {
 
     isFavorite$!: Observable<boolean>;
 
-    private currentFavorite$: Observable<Job | undefined> | undefined;
+    private currentFavorite$: Observable<FavoriteOffer | undefined> | undefined;
 
     ngOnInit(): void {
         this.isFavorite$ = this.store.select(isFavorite(this.job.slug));
