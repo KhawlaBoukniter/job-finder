@@ -7,6 +7,7 @@ import { isFavorite, selectFavoriteBySlug } from '../../../favorites/store/favor
 import { Observable, take, map, of } from 'rxjs';
 import { AuthService } from '../../../../core/services/auth.service';
 import { Router } from '@angular/router';
+import { FavoriteOffer } from '../../../favorites/store/favorites.state';
 
 @Component({
     selector: 'app-job-card',
@@ -25,8 +26,8 @@ export class JobCardComponent implements OnInit {
     private authService = inject(AuthService);
     private router = inject(Router);
 
-    isFavorite$: Observable<boolean> = of(false);
-    private currentFavorite$ = this.store.select(selectFavoriteBySlug(this.job.slug)); // Will be initialized in ngOnInit properly if needed, but here simple init
+    isFavorite$!: Observable<boolean>;
+    private currentFavorite$!: Observable<FavoriteOffer | undefined>;
 
     ngOnInit(): void {
         this.currentFavorite$ = this.store.select(selectFavoriteBySlug(this.job.slug));
